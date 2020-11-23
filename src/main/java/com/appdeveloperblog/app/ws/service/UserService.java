@@ -20,5 +20,7 @@ public interface UserService extends UserDetailsService {
 
 	List<UserDto> getUsers(int page, int limit);
 
+	boolean verifyEmailToken(String token);
+
 	
 }

@@ -1,5 +1,6 @@
 package com.appdeveloperblog.app.ws.security;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import com.appdeveloperblog.app.ws.service.UserService;
 
@@ -27,6 +29,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		http.csrf().disable()
 	    .authorizeRequests()
 	    .antMatchers(HttpMethod.POST, SecurityConstants.SING_UP_URL).permitAll()
+	    .antMatchers(HttpMethod.GET, SecurityConstants.VERIFICATION_EMAIL_URL).permitAll()
 	    .anyRequest().authenticated()
 	    .and()
 	    .addFilter(getAuthenticationFilter())

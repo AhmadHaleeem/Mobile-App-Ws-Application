@@ -16,5 +16,6 @@ public class MobileAppWsApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(MobileAppWsApplication.class, args);
 	}
+	
 
 }

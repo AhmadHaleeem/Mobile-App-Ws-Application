@@ -4,7 +4,7 @@ import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Random;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.appdeveloperblog.app.ws.security.SecurityConstants;
 
@@ -13,7 +13,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-@Component
+@Service
 public class Utils {
 
 	private final Random RANDOM = new SecureRandom();
@@ -55,7 +55,7 @@ public class Utils {
 		return returnValue;
 	}
 
-    public static String generateEmailVerificationToken(String userId) {
+    public String generateEmailVerificationToken(String userId) {
         String token = Jwts.builder()
                 .setSubject(userId)
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))

@@ -8,6 +8,7 @@ class MobileAppWsApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("Hello world..");
 	}
 
 }

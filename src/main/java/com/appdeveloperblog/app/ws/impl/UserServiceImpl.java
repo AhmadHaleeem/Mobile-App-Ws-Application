@@ -47,7 +47,8 @@ public class UserServiceImpl implements UserService {
 
 		UserEntity userMail = userRepository.findByEmail(user.getEmail());
 		if (userMail != null) {
-			throw new RuntimeException("Record already exists");
+			//throw new RuntimeException("Record already exists");
+			throw new UserServiceException("Record already exists");
 		}
 
 		for (int i = 0; i < user.getAddresses().size(); i++) {
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService {
 		String publicUserId = utils.generateUserId(30);
 		userEntity.setUserId(publicUserId);
 		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		userEntity.setEmailVerificationToken(Utils.generateEmailVerificationToken(publicUserId));
+		userEntity.setEmailVerificationToken(utils.generateEmailVerificationToken(publicUserId));
 		userEntity.setEmailVerificationStatus(false);
 
 		UserEntity storedUserDetails = userRepository.save(userEntity);

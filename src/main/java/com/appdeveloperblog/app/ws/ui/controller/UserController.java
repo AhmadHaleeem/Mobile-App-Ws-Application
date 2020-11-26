@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,7 @@ import com.appdeveloperblog.app.ws.ui.model.response.UserRest;
 
 @RestController
 @RequestMapping(path = "/users")
+//@CrossOrigin(origins = {"http://localhost:8080", "http://localhost:8083"})
 public class UserController {
 
 	@Autowired
@@ -196,8 +198,8 @@ public class UserController {
      * http://localhost:8080/mobile-app-ws/users/password-reset-request
      * */
     @PostMapping(path = "/password-reset-request",
-    		consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE },
-    		produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    		consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
+    		produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public OperationStatusModel requestReset(@RequestBody PasswordResetRequestModel passwordResetRequestModel) throws Exception {
     	
     	OperationStatusModel returnValue = new OperationStatusModel();
@@ -214,8 +216,8 @@ public class UserController {
     }
     
     @PostMapping(path = "/password-reset",
-    		consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE },
-    		produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    		consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
+    		produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public OperationStatusModel resetPassword(@RequestBody PasswordResetModel passwordResetModel) throws Exception {
     	OperationStatusModel returnValue = new OperationStatusModel();
     	

@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.appdeveloperblog.app.ws.SpringApplicationContext;
+import com.appdeveloperblog.app.ws.impl.UserPrincipal;
 import com.appdeveloperblog.app.ws.service.UserService;
 import com.appdeveloperblog.app.ws.shared.dto.UserDto;
 import com.appdeveloperblog.app.ws.ui.model.request.UserLoginRequestModel;
@@ -56,7 +57,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
-		String userName = ((User) authResult.getPrincipal()).getUsername();
+		String userName = ((UserPrincipal) authResult.getPrincipal()).getUsername();
 		
 		String token = Jwts.builder()
 						.setSubject(userName)

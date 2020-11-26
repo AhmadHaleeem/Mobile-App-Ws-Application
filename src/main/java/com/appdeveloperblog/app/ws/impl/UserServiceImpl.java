@@ -1,6 +1,8 @@
 package com.appdeveloperblog.app.ws.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -9,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,8 +18,10 @@ import org.springframework.stereotype.Service;
 
 import com.appdeveloperblog.app.ws.exceptions.UserServiceException;
 import com.appdeveloperblog.app.ws.io.entity.PasswordResetTokenEntity;
+import com.appdeveloperblog.app.ws.io.entity.RoleEntity;
 import com.appdeveloperblog.app.ws.io.entity.UserEntity;
 import com.appdeveloperblog.app.ws.io.repositories.PasswordResetTokenRepository;
+import com.appdeveloperblog.app.ws.io.repositories.RoleRepository;
 import com.appdeveloperblog.app.ws.io.repositories.UserRepository;
 import com.appdeveloperblog.app.ws.service.UserService;
 import com.appdeveloperblog.app.ws.shared.AmazonSES;
@@ -41,6 +44,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
+	private RoleRepository roleRepository;
 
 	@Override
 	public UserDto createUser(UserDto user) {
@@ -67,7 +73,17 @@ public class UserServiceImpl implements UserService {
 		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		userEntity.setEmailVerificationToken(utils.generateEmailVerificationToken(publicUserId));
 		userEntity.setEmailVerificationStatus(false);
+		
+		// Set roles
+		Collection<RoleEntity> roleEntities = new HashSet<>();
+		for (String role : user.getRoles()) {
+			RoleEntity roleEntity = roleRepository.findByName(role);
+			if (roleEntity != null) {
+				roleEntities.add(roleEntity);
+			}
+		}
 
+		userEntity.setRoles(roleEntities);
 		UserEntity storedUserDetails = userRepository.save(userEntity);
 
 		// BeanUtils.copyProperties(storedUserDetails, returnValue);
@@ -97,8 +113,11 @@ public class UserServiceImpl implements UserService {
 			throw new UsernameNotFoundException(email);
 
 		// it's to prevent users with unverified email address to login
-		return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), 
-						userEntity.getEmailVerificationStatus(), true, true, true, new ArrayList<>());
+		/*return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), 
+				userEntity.getEmailVerificationStatus(),
+				true, true,
+				true, new ArrayList<>())*/;
+		return new UserPrincipal(userEntity);
 		
 		//return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
 	}

@@ -61,8 +61,8 @@ public class AmazonSES {
 	public void verifyEmail(UserDto userDto) {
 
 		// You can also set your keys this way. And it will work!
-		System.setProperty("aws.accessKeyId", "AKIAZ5OABNVCRXAANPTQ"); 
-		System.setProperty("aws.secretKey", "GWodvmYqhgx9qWPHmjbqHzcAbGALx36IYmip7Ru7"); 
+		System.setProperty("aws.accessKeyId", "accessKeyId"); 
+		System.setProperty("aws.secretKey", "secretKey"); 
 		
 		AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.EU_CENTRAL_1).build();
  
